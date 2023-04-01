@@ -31,7 +31,7 @@ jobs:
     - name: Checkmarx DAST Github Action
       uses: Checkmarx/dast-github-action@v1.0.2
       env:
-        CX_APIKEY: ${{ secrets.CX_APIKEY }}
+        CX_APIKEY: "e94d9912-af33-4a6a-bc48-8f62bfdc1622"
       with:
         command: "web"
         config: './security_tweets.yaml'
