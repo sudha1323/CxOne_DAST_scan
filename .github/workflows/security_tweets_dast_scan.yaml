@@ -31,12 +31,12 @@ jobs:
     - name: Checkmarx DAST Github Action
       uses: Checkmarx/dast-github-action@v1.0.2
       env:
-        CX_APIKEY: ${{ secrets.CX_APIKEY }}
+        CX_APIKEY: ${{ secrets.AST_API_KEY }}
       with:
         command: "web"
         config: './security_tweets.yaml'
         base_url: "https://deu.ast.checkmarx.net"
-        environment_id: "fd6ea573-a228-47e1-b5f8-573525251bc0"
+        environment_id: "81c17ff9-f38e-42ac-9073-a802221c6105"
         fail_on: "HIGH"
         verbose: true
         output: ./output
