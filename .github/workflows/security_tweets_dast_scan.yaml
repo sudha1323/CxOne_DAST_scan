@@ -31,7 +31,7 @@ jobs:
     - name: Checkmarx DAST Github Action
       uses: Checkmarx/dast-github-action@v1.0.2
       env:
-        CX_APIKEY: "e94d9912-af33-4a6a-bc48-8f62bfdc1622"
+        CX_APIKEY: ${{ secrets.CX_APIKEY }}
       with:
         command: "web"
         config: './security_tweets.yaml'
@@ -40,8 +40,8 @@ jobs:
         fail_on: "HIGH"
         verbose: true
         output: ./output
-    - name: Reclaim output directory  
-      if: always()  
+    - name: Reclaim output directory  
+      if: always()  
       run: sudo chown -R 1001:1001 ${{ github.workspace }}/output
     - uses: actions/upload-artifact@v3
       if: always()
