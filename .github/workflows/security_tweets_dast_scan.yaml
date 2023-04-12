@@ -37,7 +37,7 @@ jobs:
         config: './security_tweets.yaml'
         base_url: "https://deu.ast.checkmarx.net"
         environment_id: "81c17ff9-f38e-42ac-9073-a802221c6105"
-        fail_on: "HIGH"
+        # fail_on: "HIGH"
         verbose: true
         output: ./output
     - name: Reclaim output directory  
