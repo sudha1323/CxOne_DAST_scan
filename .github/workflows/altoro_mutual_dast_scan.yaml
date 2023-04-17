@@ -35,9 +35,9 @@ jobs:
       with:
         command: "api"
         config: './altoro_mutual.yaml'
-        openapi: file here
+        openapi: './altoro_mutual.json'
         base_url: "https://ast.checkmarx.net" #"https://deu.ast.checkmarx.net"
-        environment_id: "e64ac486-f2e3-486e-8757-fece216af179" #"2f776f4a-dfda-46d1-9fda-b879307d9b76"
+        environment_id: "19c8a470-1b0c-4766-b807-5e839a65c31b"
         fail_on: "HIGH"
         verbose: true
         output: ./output
