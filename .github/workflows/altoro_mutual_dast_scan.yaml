@@ -34,7 +34,7 @@ jobs:
         CX_APIKEY: ${{ secrets.CX_APIKEY }}
       with:
         command: "web"
-        #config: './altoro_mutual.yaml'
+        config: "../altoro_mutual.yaml"
         base_url: "https://deu.ast.checkmarx.net"
         environment_id: "57bfe275-110b-4c94-a717-c1935b761720"
         fail_on: "HIGH"
