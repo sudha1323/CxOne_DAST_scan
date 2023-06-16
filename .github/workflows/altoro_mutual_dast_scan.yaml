@@ -2,12 +2,12 @@ name: allengayCx Altoro Mutual
 
 # Controls when the workflow will run
 on:
-  #pull_request:
-  #  types: [opened, reopened, synchronize]
-  #  branches: [ "main" ]
-  #push: 
-  #    branches:
-  #    - main
+  pull_request:
+   #types: [opened, reopened, synchronize]
+   branches: [ "main" ]
+#   push: 
+#      branches:
+#      - main
   workflow_dispatch: # *** this adds a run button ***
 
 permissions:
@@ -29,15 +29,14 @@ jobs:
     - uses: actions/checkout@v3
     # Scan
     - name: Checkmarx DAST Github Action
-      uses: Checkmarx/dast-github-action@v1.0.3
+      uses: Checkmarx/dast-github-action@v1.0.2
       env:
         CX_APIKEY: ${{ secrets.CX_APIKEY }}
       with:
-        command: "api"
-        config: './altoro_mutual.yaml'
-        openapi: './altoro_mutual.json'
-        base_url: "https://ast.checkmarx.net" #"https://deu.ast.checkmarx.net"
-        environment_id: "19c8a470-1b0c-4766-b807-5e839a65c31b"
+        command: "web"
+        config: "./altoro_mutual.yaml"
+        base_url: "https://deu.ast.checkmarx.net"
+        environment_id: "57bfe275-110b-4c94-a717-c1935b761720"
         fail_on: "HIGH"
         verbose: true
         output: ./output
