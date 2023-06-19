@@ -47,7 +47,7 @@ jobs:
     name: "passiveScan-config"
     type: "passiveScan-config"
   # - parameters:
-  #     apiFile: "C:\\Users\\joaor\\OneDrive - Checkmarx\\Desktop\\dast - testfire\\openapi.json"
+  #     apiFile: "./alroto_mutual.json"
   #     apiUrl: ""
   #     targetUrl: "http://testfire.net/"
   #     context: "Default Context"
@@ -74,13 +74,6 @@ jobs:
       rules: []
     name: "activeScan"
     type: "activeScan"
-  #- parameters:
-  #    template: "risk-confidence-html"
-  #    reportDir: ""
-  #    reportTitle: "ZAP Scanning Report"
-  #    reportDescription: ""
-  #  name: "report"
-  #  type: "report"
   - parameters:
       template: "traditional-pdf"
       reportDir: ""
