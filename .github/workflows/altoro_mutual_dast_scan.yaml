@@ -1,4 +1,4 @@
-name: CxONE Dast Scan Gin and Juice
+name: CxONE Dast Scan Altoro Mutual
 on:
   #pull_request:
   #  branches:
