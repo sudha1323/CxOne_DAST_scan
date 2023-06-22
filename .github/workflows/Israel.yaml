@@ -1,8 +1,8 @@
 name: CxONE Dast Scan 
 on:
-#  pull_request:
-#    branches:
-#    - main
+  #pull_request:
+  #  branches:
+  #  - main
     
   workflow_dispatch: #adds a 'run now' button
   
@@ -27,13 +27,13 @@ jobs:
       - name: Checkmarx DAST Github Action
         uses: Checkmarx/dast-github-action@v1.0.2
         env:
-            CX_APIKEY: ${{ secrets.CX_APIKEY }}
+          CX_APIKEY: ${{ secrets.CX_APIKEY }}
         with:
             command: web
             config: './gin_juice.yaml'
             environment_id: "e64ac486-f2e3-486e-8757-fece216af179"
             log_level: info
-            base_url: "https://at.checkmarx.net"
+            base_url: "https://ast.checkmarx.net"
             fail_on: ""
             verbose: true
             output: ./output
