@@ -1,0 +1,28 @@
+name: CxONE Scan Dast
+on:
+  pull_request:
+    branches:
+    - main
+    
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Checkmarx DAST Github Action
+        uses: Checkmarx/dast-github-action@v1.0.2
+        env:
+          CX_APIKEY: ${{ secrets.CX_APIKEY }}
+        with:
+            command: web
+            config: './gin_juice.yaml'
+            environment_id: "7d57e5e8-69ec-42b9-882b-1f56172742da"
+            log_level: info
+            base_url: "https://deu.ast.checkmarx.net"
