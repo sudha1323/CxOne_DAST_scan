@@ -6,8 +6,8 @@ on:
     
   workflow_dispatch: #adds a 'run now' button
   
-#permissions:
-#  contents: read
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,10 +15,10 @@ concurrency:
 
 jobs:
   build:
-    #permissions:
-    #  contents: read # for actions/checkout to fetch code
-    #  security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-    #  actions: read # only required for a private repository by github/codeql-action/upload-sarif
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif
      # The type of runner that the job will run on 
     runs-on: ubuntu-latest
     steps:
@@ -33,17 +33,17 @@ jobs:
             config: './altoro_mutual.yaml'
             openapi: './altoro_mutual.json'
             environment_id: "19c8a470-1b0c-4766-b807-5e839a65c31b"
-            #log_level: info
+            log_level: info
             base_url: "https://ast.checkmarx.net"
-            #fail_on: ""
-            #verbose: true
-            #output: ./output
-      #- name: Reclaim output directory
-      #  if: always()
-      #  run: sudo chown -R 1001:1001 ${{ github.workspace }}/output
-      #- uses: actions/upload-artifact@v3
-      #  if: always()
-      #  name: Upload Logs
-      #  with:
-      #    name: report
-      #    path: ./output
+            fail_on: ""
+            verbose: true
+            output: ./output
+      - name: Reclaim output directory
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output
+      - uses: actions/upload-artifact@v3
+        if: always()
+        name: Upload Logs
+        with:
+          name: report
+          path: ./output
