@@ -1,4 +1,4 @@
-name: CxONE Dast Scan Altoro Mutual
+name: CxONE Dast API Scan Altoro Mutual
 on:
   #pull_request:
   #  branches:
