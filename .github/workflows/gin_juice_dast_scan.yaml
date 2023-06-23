@@ -45,5 +45,5 @@ jobs:
         name: Upload Logs
         with:
           name: report
-          path: ./output
+          path: ${{ github.workspace }}/output_fold
           
