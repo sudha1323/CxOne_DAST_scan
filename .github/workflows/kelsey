@@ -17,12 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Checkmarx DAST Github Action
-        uses: Checkmarx/dast-github-action@v1.0.2
+        uses: Checkmarx/dast-github-action@v1.0.4
         env:
           CX_APIKEY: ${{ secrets.CX_APIKEY }}
         with:
             command: web
             config: './gin_juice.yaml'
-            environment_id: "7d57e5e8-69ec-42b9-882b-1f56172742da"
+            environment_id: "e64ac486-f2e3-486e-8757-fece216af179"
             log_level: info
-            base_url: "https://deu.ast.checkmarx.net"
+            base_url: "https://ast.checkmarx.net"
