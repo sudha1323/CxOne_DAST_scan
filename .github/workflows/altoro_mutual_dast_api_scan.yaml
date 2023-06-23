@@ -1,9 +1,12 @@
 name: CxONE Dast API Scan Altoro Mutual
 on:
   #pull_request:
-  #  branches:
-  #  - main
-    
+  # branches:
+  # - main
+  #push: 
+  # branches:
+  # - main
+   
   workflow_dispatch: #adds a 'run now' button
   
 permissions:
