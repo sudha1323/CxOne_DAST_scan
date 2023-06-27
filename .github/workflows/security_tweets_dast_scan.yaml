@@ -37,7 +37,7 @@ jobs:
           CX_APIKEY: ${{ secrets.CX_APIKEY }}
         with:
             command: web
-            config: './gin_juice.yaml'
+            config: './security_tweets.yaml'
             log_level: info
             #prod
             #base_url: "https://ast.checkmarx.net"
