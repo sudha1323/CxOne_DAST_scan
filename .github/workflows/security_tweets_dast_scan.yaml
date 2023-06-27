@@ -38,9 +38,13 @@ jobs:
         with:
             command: web
             config: './gin_juice.yaml'
-            environment_id: "2a9f8f9a-5a62-468c-85ef-27bfbabf01bf"
             log_level: info
+            #prod
             base_url: "https://ast.checkmarx.net"
+            environment_id: "2a9f8f9a-5a62-468c-85ef-27bfbabf01bf"
+            # canary
+            #base_url: "https://deu.ast.checkmarx.net"
+            #environment_id: "xxx"
             fail_on: ""
             verbose: true
             output: ${{ github.workspace }}/output_fold
