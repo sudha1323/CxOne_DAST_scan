@@ -27,6 +27,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Create Output folder
+        run: mkdir ${{ github.workspace }}/output_fold
+      - name: Change dir owner
+        run: sudo chown -R 1000:1000 ${{ github.workspace }}
       - name: Checkmarx DAST Github Action
         uses: Checkmarx/dast-github-action@v1.0.4
         env:
@@ -39,14 +43,13 @@ jobs:
             base_url: "https://ast.checkmarx.net"
             fail_on: ""
             verbose: true
-            output: ./output
+            output: ${{ github.workspace }}/output_fold
       - name: Reclaim output directory
         if: always()
-        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
       - uses: actions/upload-artifact@v3
         if: always()
         name: Upload Logs
         with:
           name: report
-          path: ./output
-          
+          path: ${{ github.workspace }}/output_fold
