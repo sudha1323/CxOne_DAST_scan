@@ -46,7 +46,7 @@ jobs:
             output: ${{ github.workspace }}/output_fold #./output
       - name: Reclaim output directory
         if: always()
-        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
       - uses: actions/upload-artifact@v3
         if: always()
         name: Upload Logs
