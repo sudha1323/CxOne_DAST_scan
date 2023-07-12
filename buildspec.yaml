@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+     #- sudo apt-get update
+     #- sudo curl -fsSL https://get.docker.com -o get-docker.sh # to download docker if needed
+     #- sudo sh get-docker.sh
+     #- sudo service --status-all # to see if docker is running, it should be
+      - docker pull checkmarx/dast:latest #pull the latest docker dast image
+      
+  build:
+    commands:
+     #- pwd 
+     #- uname -a
+     #- ls
+     #- whoami
+     #- cat gin_juice.yaml
+     #- chmod 777 gin_juice.yaml
+      - docker run -e CX_APIKEY=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwNzExMDZkNS0xM2FlLTRlYTgtYTcwOC1kYTUwZmQ3ZTRlNWIifQ.eyJpYXQiOjE2NzA1MzczMTcsImp0aSI6ImIzYmUwNWQwLTgxYzItNGFmMi04ZGFjLWJlNGQzNGFkN2E3YiIsImlzcyI6Imh0dHBzOi8vaWFtLmNoZWNrbWFyeC5uZXQvYXV0aC9yZWFsbXMvY3hfYXN0X3NlX2FsbGVuZ2F5X2RlbW9fbmEiLCJhdWQiOiJodHRwczovL2lhbS5jaGVja21hcngubmV0L2F1dGgvcmVhbG1zL2N4X2FzdF9zZV9hbGxlbmdheV9kZW1vX25hIiwic3ViIjoiZWEzNzBmNzYtZDVhMS00MTI0LWIxZjEtYmRjMjBiNmYzZDViIiwidHlwIjoiT2ZmbGluZSIsImF6cCI6ImFzdC1hcHAiLCJzZXNzaW9uX3N0YXRlIjoiNzljOGU4OGUtOTQzYy00NzJjLWIwMzctOGI5MjBhZTg1M2U1Iiwic2NvcGUiOiIgb2ZmbGluZV9hY2Nlc3MiLCJzaWQiOiI3OWM4ZTg4ZS05NDNjLTQ3MmMtYjAzNy04YjkyMGFlODUzZTUifQ.dETMAIKLm_sNczTwzRwaNDj2bDDLEyJVuPNqxoMecRM \ 
+      -v $(pwd):/dast_home checkmarx/dast:latest \
+      web --environment-id='e64ac486-f2e3-486e-8757-fece216af179' \
+      --config='/dast_home/gin_juice.yaml' --base-url=https://ast.checkmarx.net/ \
+      --output='/dast_home/DAST_results/dast_scan_output' \
+      --jvm-properties=-Xmx3G --log-level=trace --verbose --retry=3 --retry-delay=20
+           
+artifacts:
+  files:
+    - '**/*'
+  # - 'Gin_juice.yaml'
+    - '/dast_home/DAST_results/dast_scan_output'
