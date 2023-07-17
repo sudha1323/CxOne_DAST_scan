@@ -17,7 +17,11 @@ phases:
      #- whoami
      #- cat gin_juice.yaml
      #- chmod 777 gin_juice.yaml
-      - docker run -e CX_APIKEY=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwNzExMDZkNS0xM2FlLTRlYTgtYTcwOC1kYTUwZmQ3ZTRlNWIifQ.eyJpYXQiOjE2NzA1MzczMTcsImp0aSI6ImIzYmUwNWQwLTgxYzItNGFmMi04ZGFjLWJlNGQzNGFkN2E3YiIsImlzcyI6Imh0dHBzOi8vaWFtLmNoZWNrbWFyeC5uZXQvYXV0aC9yZWFsbXMvY3hfYXN0X3NlX2FsbGVuZ2F5X2RlbW9fbmEiLCJhdWQiOiJodHRwczovL2lhbS5jaGVja21hcngubmV0L2F1dGgvcmVhbG1zL2N4X2FzdF9zZV9hbGxlbmdheV9kZW1vX25hIiwic3ViIjoiZWEzNzBmNzYtZDVhMS00MTI0LWIxZjEtYmRjMjBiNmYzZDViIiwidHlwIjoiT2ZmbGluZSIsImF6cCI6ImFzdC1hcHAiLCJzZXNzaW9uX3N0YXRlIjoiNzljOGU4OGUtOTQzYy00NzJjLWIwMzctOGI5MjBhZTg1M2U1Iiwic2NvcGUiOiIgb2ZmbGluZV9hY2Nlc3MiLCJzaWQiOiI3OWM4ZTg4ZS05NDNjLTQ3MmMtYjAzNy04YjkyMGFlODUzZTUifQ.dETMAIKLm_sNczTwzRwaNDj2bDDLEyJVuPNqxoMecRM -v $(pwd):/dast_home checkmarx/dast:latest web --environment-id='e64ac486-f2e3-486e-8757-fece216af179' --config='/dast_home/gin_juice.yaml' --base-url=https://ast.checkmarx.net/ --output='/dast_home/DAST_results/dast_scan_output' --jvm-properties=-Xmx3G --log-level=trace --verbose --retry=3 --retry-delay=20
+      - docker run -e CX_APIKEY=eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwZTU0NjUwNC1jM2U1LTRlY2QtYTVkMC04NjZiNTY1YjhiNTYifQ.eyJpYXQiOjE2NjY3OTg5MjYsImp0aSI6IjRiOTZhNmEzLWUxZDAtNDA0MS05ZDkwLTFhMGQ3ZjcwZGRhMiIsImlzcyI6Imh0dHBzOi8vZGV1LmlhbS5jaGVja21hcngubmV0L2F1dGgvcmVhbG1zL2N4X3VzX3Nlc19jYW5hcnlfYWxsZW5fZ2F5IiwiYXVkIjoiaHR0cHM6Ly9kZXUuaWFtLmNoZWNrbWFyeC5uZXQvYXV0aC9yZWFsbXMvY3hfdXNfc2VzX2NhbmFyeV9hbGxlbl9nYXkiLCJzdWIiOiIwMmMzOGVjZS1kZjJkLTRmZDMtODlhMS1hYzBhNzdkMmZmNzAiLCJ0eXAiOiJPZmZsaW5lIiwiYXpwIjoiYXN0LWFwcCIsInNlc3Npb25fc3RhdGUiOiIwYmI4MGQyOC1iODQ5LTRhZDEtOGY4NS00ZDRhZjhkZWUwMTciLCJzY29wZSI6IiBvZmZsaW5lX2FjY2VzcyIsInNpZCI6IjBiYjgwZDI4LWI4NDktNGFkMS04Zjg1LTRkNGFmOGRlZTAxNyJ9.1hLEFhrQSOCEYi1TJ2vsX8bFUqJZMqRGf824akx-TzQ\
+      -v $(pwd):/dast_home checkmarx/dast:latest\
+      web --environment-id='84b51045-9573-4e03-904e-853c620b8674' --config='/dast_home/gin_juice.yaml'\
+      --base-url=https://deu.ast.checkmarx.net/ --output='/dast_home/DAST_results/dast_scan_output'\
+      --jvm-properties=-Xmx3G --log-level=trace --verbose --retry=3 --retry-delay=20
       
 artifacts:
   files:
