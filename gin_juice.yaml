@@ -5,7 +5,7 @@ env:
       urls:
         - "https://ginandjuice.shop"
       includePaths:
-        - "https://ginandjuice.shop/about/*"
+        - "https://ginandjuice.shop/*"
       excludePaths: []
       authentication:
         method: "form"
