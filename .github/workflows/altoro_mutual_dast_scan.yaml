@@ -36,7 +36,7 @@ jobs:
         command: "web"
         config: "./altoro_mutual.yaml"
         base_url: "https://deu.ast.checkmarx.net"
-        environment_id: "57bfe275-110b-4c94-a717-c1935b761720"
+        environment_id: "94ac5fa5-05b9-46c0-8810-300dd20a3ff5"
         fail_on: "HIGH"
         verbose: true
         output: ./output
