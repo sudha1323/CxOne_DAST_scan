@@ -35,19 +35,19 @@ jobs:
         uses: Checkmarx/dast-github-action@v1.0.6
         env:
           # prod
-          CX_APIKEY: ${{ secrets.CX_APIKEY }}
+          # CX_APIKEY: ${{ secrets.CX_APIKEY }}
           # canary: 
-          # CX_APIKEY: ${{ secrets.CANARY_API_KEY }}
+          CX_APIKEY: ${{ secrets.CANARY_API_KEY }}
         with:
             command: web
             config: './gin_juice.yaml'
             log_level: info
             #prod
-            base_url: "https://ast.checkmarx.net"
-            environment_id: "e64ac486-f2e3-486e-8757-fece216af179"
+            #base_url: "https://ast.checkmarx.net"
+            #environment_id: "e64ac486-f2e3-486e-8757-fece216af179"
             # canary
-            #base_url: "https://deu.ast.checkmarx.net"
-            #environment_id: "xxx"
+            base_url: "https://deu.ast.checkmarx.net"
+            environment_id: "124fdb23-fe8c-4371-9dae-bd8c97df0b14"
             fail_on: ""
             verbose: true
             output: ${{ github.workspace }}/output_fold #./output
