@@ -1,0 +1,86 @@
+---
+env:
+  contexts:
+    - name: "GinAndJuice"
+      urls:
+        - "https://ginandjuice.shop"
+      includePaths:
+        - "https://ginandjuice.shop.*"
+      excludePaths: 
+        - "https://ginandjuice.shop/images/.*"
+        - "https://ginandjuice.shop/catalog/.*"
+        - "https://ginandjuice.shop/image/.*"
+        - "https://ginandjuice.shop/resources/.*"
+      technology:
+        exclude: []
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+  vars: {}
+jobs:
+  - parameters:
+      maxAlertsPerRule: 0
+      scanOnlyInScope: true
+      maxBodySizeInBytesToScan: 0
+      enableTags: false
+    rules: []
+    name: "passiveScan-config"
+    type: "passiveScan-config"
+  - parameters:
+      context: "GinAndJuice"
+      maxDuration: 10
+      maxDepth: 0
+      maxChildren: 0
+      acceptCookies: false
+      handleODataParametersVisited: false
+      handleParameters: "IGNORE_COMPLETELY"
+      maxParseSizeBytes: 0
+      parseComments: false
+      parseGit: false
+      parseRobotsTxt: false
+      parseSitemapXml: false
+      parseSVNEntries: false
+      postForm: false
+      processForm: false
+      requestWaitTime: 0
+      sendRefererHeader: false
+      userAgent: ""
+    name: "spider"
+    type: "spider"
+  - parameters:
+      context: "GinAndJuice"
+      maxDuration: 60
+      maxCrawlDepth: 10
+      numberOfBrowsers: 8
+      runOnlyIfModern: false
+    name: "spiderAjax"
+    type: "spiderAjax"
+  - parameters: 
+      maxDuration : 20
+    name: "passiveScan-wait"
+    type: "passiveScan-wait"
+  - parameters:
+      context: "GinAndJuice"
+      policy: ""
+      maxRuleDurationInMins: 0
+      maxScanDurationInMins: 0
+      addQueryParam: false
+      delayInMs: 0
+      handleAntiCSRFTokens: false
+      injectPluginIdInHeader: false
+      scanHeadersAllRequests: false
+      threadPerHost: 5
+    policyDefinition:
+      defaultStrength: "medium"
+      defaultThreshold: "medium"
+      rules: []
+    name: "activeScan"
+    type: "activeScan"
+  - parameters:
+      template: "traditional-pdf"
+      reportDir: ""
+      reportTitle: "Cx Zap Scanning Report"
+      reportDescription: ""
+    name: "report-pdf"
+    type: "report"
