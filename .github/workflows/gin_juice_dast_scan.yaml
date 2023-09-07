@@ -40,7 +40,7 @@ jobs:
           # CX_APIKEY: ${{ secrets.CANARY_API_KEY }}
         with:
             command: web
-            config: './gin_juice.yaml'
+            config: './gin_juice_noauth_yaml'
             log_level: info
             #prod
             base_url: "https://ast.checkmarx.net"
