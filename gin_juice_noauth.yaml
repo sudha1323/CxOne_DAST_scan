@@ -77,10 +77,17 @@ jobs:
       rules: []
     name: "activeScan"
     type: "activeScan"
-  - parameters:
-      template: "traditional-pdf"
-      reportDir: ""
-      reportTitle: "Cx Zap Scanning Report"
-      reportDescription: ""
-    name: "report-pdf"
-    type: "report"
+ - name: report-pdf
+   parameters:
+     reportDescription: ""
+     reportDir: /demo/test_output/dast-output-789017290
+     reportFile: ZAP-Report
+     reportTitle: ZAP Scanning Report
+     template: traditional-pdf
+   type: report
+ - name: report
+   parameters:
+     reportDir: /demo/test_output/dast-output-789017290
+     reportFile: ZAP-Report
+     template: traditional-json-plus
+   type: report
