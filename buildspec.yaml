@@ -7,6 +7,7 @@ phases:
      #- sudo curl -fsSL https://get.docker.com -o get-docker.sh # to download docker if needed
      #- sudo sh get-docker.sh
      #- sudo service --status-all # to see if docker is running, it should be
+      - sudo chmod a+rw -R ./
       - docker pull checkmarx/dast:latest #pull the latest docker dast image
       
   build:
