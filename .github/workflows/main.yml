@@ -14,6 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run DAST Scan
-        uses: checkmarx/dast-github-action@v1.0
+        uses: checkmarx/dast-github-action@v2.321.0
         env:
           CX_APIKEY: ${{ secrets.CX_APIKEY }}
