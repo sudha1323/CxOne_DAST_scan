@@ -1,4 +1,4 @@
-name: Checkmarx One DAST Scan
+name: Checkmarx One Scan
 
 on:
   push:
@@ -8,12 +8,27 @@ on:
       - dev
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkmarx One CLI Action
+        uses: checkmarx/ast-github-action@main # Github Action version
+        with:
+          project_name: demo321
+          cx_tenant: ast_abdul_ansari
+          base_uri: https://eu.ast.checkmarx.net/
+          cx_client_id: ${{ secrets.CXCLIENT_ID }}
+          cx_client_secret: ${{ secrets.CXCLIENT_SECRET }}
+
   dast_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run DAST Scan
-        uses: checkmarx/dast-github-action@latest
+        uses: checkmarx/dast-github-action@v1.0
         env:
           CX_APIKEY: ${{ secrets.CX_APIKEY }}
+
