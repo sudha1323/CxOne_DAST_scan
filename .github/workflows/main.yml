@@ -1,0 +1,19 @@
+name: Checkmarx One DAST Scan
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+
+jobs:
+  dast_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run DAST Scan
+        uses: checkmarx/dast-github-action@v1.0
+        env:
+          CX_APIKEY: ${{ secrets.CX_APIKEY }}
