@@ -1,34 +1,60 @@
-name: Checkmarx One Scan
-
+name: CxONE Dast Scan Gin and Juice
 on:
-  push:
-    branches:
-      - main
-      - master
-      - dev
-
+  pull_request:
+   branches:
+   - master
+  push: 
+   branches:
+   - master
+  workflow_dispatch: #adds a 'run now' button
+permissions:
+  contents: read
+ 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+ 
 jobs:
   build:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif
+     # The type of runner that the job will run on 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Checkmarx One CLI Action
-        uses: checkmarx/ast-github-action@main # Github Action version
-        with:
-          project_name: demo321
-          cx_tenant: ast_abdul_ansari
-          base_uri: https://eu.ast.checkmarx.net/
-          cx_client_id: ${{ secrets.CXCLIENT_ID }}
-          cx_client_secret: ${{ secrets.CXCLIENT_SECRET }}
-
-  dast_scan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Run DAST Scan
-        uses: checkmarx/dast-github-action@v1.0
+        uses: actions/checkout@v3
+      - name: Create Output folder
+        run: mkdir ${{ github.workspace }}/output_fold
+      - name: Change dir owner
+        run: sudo chown -R 1000:1000 ${{ github.workspace }}
+      - name: Checkmarx DAST Github Action
+        uses: Checkmarx/dast-github-action@v2.3.0
         env:
+          # prod
           CX_APIKEY: ${{ secrets.CX_APIKEY }}
-
+          # canary: 
+          # CX_APIKEY: ${{ secrets.CANARY_API_KEY }}
+        with:
+            command: web
+            config: './gin_juice.yaml'
+            log_level: info
+            #prod
+            base_url: "https://eu.ast.checkmarx.net"
+            environment_id: "766883af-19df-4cd2-98eb-e68a9f67b83f"
+            # canary
+            #base_url: "https://ind.ast.checkmarx.net"
+            #environment_id: "bd462e37-c712-440a-9e0c-7984b09d5252"
+            fail_on: ""
+            verbose: true
+            output: ${{ github.workspace }}/output_fold #./output
+      - name: Reclaim output directory
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+      - uses: actions/upload-artifact@v3
+        if: always()
+        name: Upload Logs
+        with:
+          name: report
+          path: ${{ github.workspace }}/output_fold
