@@ -1,26 +1,26 @@
 name: CxONE Dast Scan Gin and Juice
 on:
   pull_request:
-   branches:
-   - main
+    branches:
+      - main
   push: 
-   branches:
-   - main
+    branches:
+      - main
   workflow_dispatch: #adds a 'run now' button
 permissions:
   contents: read
- 
+  security-events: write # Allows uploading SARIF results
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
- 
+
 jobs:
   build:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif
-     # The type of runner that the job will run on 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,53 +32,29 @@ jobs:
       - name: Checkmarx DAST Github Action
         uses: Checkmarx/dast-github-action@v2.3.0
         env:
-          # prod
           CX_APIKEY: ${{ secrets.CX_APIKEY }}
-          # canary: 
-          # CX_APIKEY: ${{ secrets.CANARY_API_KEY }}
         with:
             command: web
             config: './gin_juice.yaml'
             log_level: info
-            #prod
             base_url: "https://eu.ast.checkmarx.net"
             environment_id: "766883af-19df-4cd2-98eb-e68a9f67b83f"
-            # canary
-            #base_url: "https://ind.ast.checkmarx.net"
-            #environment_id: "bd462e37-c712-440a-9e0c-7984b09d5252"
             fail_on: ""
             verbose: true
-            output: ${{ github.workspace }}/output_fold #./output
+            output: ${{ github.workspace }}/output_fold
+            sarif: ${{ github.workspace }}/output_fold/sarif_report.sarif # Specify SARIF output file path
       - name: Reclaim output directory
         if: always()
         run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
-      - uses: actions/upload-artifact@v3
+      - name: Upload Logs
         if: always()
-        name: Upload Logs
+        uses: actions/upload-artifact@v3
         with:
           name: report
           path: ${{ github.workspace }}/output_fold
-          name: "CodeQL"
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: javascript
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: results.sarif
+      - name: Upload SARIF Report to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}/output_fold/sarif_report.sarif
 
