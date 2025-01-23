@@ -1,23 +1,59 @@
-name: "CodeQL"
+name: CxONE Dast Scan Gin and Juice
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+  push: 
+    branches:
+      - main
+  workflow_dispatch: #adds a 'run now' button
+permissions:
+  contents: read
+  security-events: write # Allows uploading SARIF results
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  analyze:
-    name: Analyze
+  build:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: javascript
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-        sarif_file: results.sarif
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Output folder
+        run: mkdir ${{ github.workspace }}/output_fold
+      - name: Change dir owner
+        run: sudo chown -R 1000:1000 ${{ github.workspace }}
+      - name: Checkmarx DAST Github Action
+        uses: Checkmarx/dast-github-action@v2.3.0
+        env:
+          CX_APIKEY: ${{ secrets.CX_APIKEY }}
+        with:
+            command: web
+            config: './gin_juice.yaml'
+            log_level: info
+            base_url: "https://eu.ast.checkmarx.net"
+            environment_id: "766883af-19df-4cd2-98eb-e68a9f67b83f"
+            fail_on: ""
+            verbose: true
+            output: ${{ github.workspace }}/output_fold
+            sarif: ${{ github.workspace }}/output_fold/sarif_report.sarif # Specify SARIF output file path
+      - name: Reclaim output directory
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+      - name: Upload Logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: ${{ github.workspace }}/output_fold
+      - name: Upload SARIF Report to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}/output_fold/sarif_report.sarif
