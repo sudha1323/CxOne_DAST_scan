@@ -9,11 +9,9 @@ on:
   workflow_dispatch: # adds a 'run now' button
 permissions:
   contents: read
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   build:
     permissions:
@@ -24,9 +22,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Create Output folder
-        run: mkdir ${{ github.workspace }}/output_fold
-      - name: Change dir owner
+      - name: Create Output Folder
+        run: mkdir -p ${{ github.workspace }}/output_fold
+      - name: Change Directory Owner
         run: sudo chown -R 1000:1000 ${{ github.workspace }}
       - name: Checkmarx DAST Github Action
         uses: Checkmarx/dast-github-action@v2.3.0
@@ -41,28 +39,26 @@ jobs:
           fail_on: ""
           verbose: true
           output: ${{ github.workspace }}/output_fold
-      - name: Reclaim output directory
+      - name: Reclaim Output Directory
         if: always()
         run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
       - name: Upload Logs
         uses: actions/upload-artifact@v3
         if: always()
-        name: Upload Logs
         with:
           name: report
           path: ${{ github.workspace }}/output_fold
-
-      # New steps to generate and upload SARIF report
-      - name: Generate SARIF report
+ 
+      # New steps to handle SARIF output
+      - name: Validate SARIF Report
         run: |
-          # Assuming the SARIF file is created by the Checkmarx DAST scan and is located in the output folder
           if [ -f "${{ github.workspace }}/output_fold/report.sarif" ]; then
-            echo "SARIF report found, uploading."
+            echo "SARIF report found."
           else
-            echo "No SARIF report found."
+            echo "No SARIF report found. Ensure Checkmarx DAST produces a SARIF report."
             exit 1
           fi
-
+ 
       - name: Upload SARIF Report to GitHub Security
         uses: github/codeql-action/upload-sarif@v2
         with:
