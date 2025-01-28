@@ -27,7 +27,7 @@ jobs:
       - name: Change Directory Owner
         run: sudo chown -R 1000:1000 ${{ github.workspace }}
       - name: Checkmarx DAST Github Action
-        uses: Checkmarx/dast-github-action@v2.3.0
+        uses: Checkmarx/dast-github-action@v3
         env:
           CX_APIKEY: ${{ secrets.CX_APIKEY }} # prod
         with:
@@ -54,4 +54,4 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: cx_result.sarif
+          sarif_file: C:\New folder\CxOne_DAST_scan-main\CxOne_DAST_scan-main
