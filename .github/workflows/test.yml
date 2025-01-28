@@ -1,0 +1,57 @@
+name: CxONE Dast Scan Gin and Juice
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch: # adds a 'run now' button
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    permissions:
+      contents: read # for actions/checkout to fetch code
+      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+      actions: read # only required for a private repository by github/codeql-action/upload-sarif
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Output Folder
+        run: mkdir -p ${{ github.workspace }}/output_fold
+      - name: Change Directory Owner
+        run: sudo chown -R 1000:1000 ${{ github.workspace }}
+      - name: Checkmarx DAST Github Action
+        uses: Checkmarx/dast-github-action@v2.3.0
+        env:
+          CX_APIKEY: ${{ secrets.CX_APIKEY }} # prod
+        with:
+          command: web
+          config: './gin_juice.yaml'
+          log_level: info
+          base_url: "https://eu.ast.checkmarx.net"
+          environment_id: "766883af-19df-4cd2-98eb-e68a9f67b83f"
+          fail_on: ""
+          verbose: true
+          output: ${{ github.workspace }}/output_fold
+      - name: Reclaim Output Directory
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+      - name: Upload Logs
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: report
+          path: ${{ github.workspace }}/output_fold
+ 
+          additional_params: --report-format sarif --output-path .
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: cx_result.sarif
