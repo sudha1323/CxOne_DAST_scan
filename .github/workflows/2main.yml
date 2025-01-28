@@ -49,18 +49,9 @@ jobs:
           name: report
           path: ${{ github.workspace }}/output_fold
  
-      # New steps to handle SARIF output
-      - name: Validate SARIF Report
-        run: |
-          if [ -f "${{ github.workspace }}/output_fold/report.sarif" ]; then
-            echo "SARIF report found."
-          else
-            echo "No SARIF report found. Ensure Checkmarx DAST produces a SARIF report."
-            exit 1
-          fi
- 
-      - name: Upload SARIF Report to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
+          additional_params: --report-format sarif --output-path .
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: ${{ github.workspace }}/output_fold/report.sarif
-        if: always()
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: cx_result.sarif
