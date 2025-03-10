@@ -7,11 +7,13 @@ on:
     branches:
       - main
   workflow_dispatch: # adds a 'run now' button
+
 permissions:
   contents: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   build:
     permissions:
@@ -19,16 +21,20 @@ jobs:
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif
     runs-on: ubuntu-latest
+
     steps:
-     - name: Upload Artifact
-       uses: actions/upload-artifact@v4
-       with:
-        name: my-artifact
-       path: path/to/your/artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifact
+          path: path/to/your/artifact
+
       - name: Create Output Folder
         run: mkdir -p ${{ github.workspace }}/output_fold
+
       - name: Change Directory Owner
         run: sudo chown -R 1000:1000 ${{ github.workspace }}
+
       - name: Checkmarx DAST Github Action
         uses: Checkmarx/dast-github-action@v2.3.0
         env:
@@ -42,17 +48,18 @@ jobs:
           fail_on: ""
           verbose: true
           output: ${{ github.workspace }}/output_fold
+
       - name: Reclaim Output Directory
         if: always()
         run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+
       - name: Upload Logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # Updated to v4
         if: always()
         with:
           name: report
           path: ${{ github.workspace }}/output_fold
- 
-          additional_params: --report-format sarif --output-path .
+
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v1
         with:
