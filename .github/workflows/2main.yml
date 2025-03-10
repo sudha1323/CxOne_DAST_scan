@@ -35,7 +35,7 @@ jobs:
           CX_APIKEY: ${{ secrets.CX_APIKEY }} # prod
         with:
           command: web
-          config: ./altoro_mutual.yaml
+          config: ./gin_juice.yaml
           log_level: info
           base_url: https://eu.ast.checkmarx.net
           environment_id: 766883af-19df-4cd2-98eb-e68a9f67b83f
