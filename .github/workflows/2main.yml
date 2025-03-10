@@ -20,8 +20,11 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+     - name: Upload Artifact
+       uses: actions/upload-artifact@v4
+       with:
+        name: my-artifact
+       path: path/to/your/artifact
       - name: Create Output Folder
         run: mkdir -p ${{ github.workspace }}/output_fold
       - name: Change Directory Owner
